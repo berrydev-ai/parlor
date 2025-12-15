@@ -1,7 +1,7 @@
 # Parlor
 
 [![CI](https://github.com/berrydev-ai/parlor/actions/workflows/ci.yml/badge.svg)](https://github.com/berrydev-ai/parlor/actions/workflows/ci.yml)
-[![npm version](https://badge.fury.io/js/parlor.svg)](https://badge.fury.io/js/parlor)
+[![npm version](https://img.shields.io/npm/v/@berrydev-ai/parlor.svg)](https://www.npmjs.com/package/@berrydev-ai/parlor)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A TypeScript library for rich, interactive console output - like Python's Rich library, optimized for AI agent responses with streaming support.
@@ -19,11 +19,11 @@ A TypeScript library for rich, interactive console output - like Python's Rich l
 ## Installation
 
 ```bash
-bun add parlor
+bun add @berrydev-ai/parlor
 # or
-npm install parlor
+npm install @berrydev-ai/parlor
 # or
-pnpm add parlor
+pnpm add @berrydev-ai/parlor
 ```
 
 ## Quick Start
@@ -32,7 +32,7 @@ pnpm add parlor
 
 ```tsx
 import { render } from 'ink';
-import { MessagePanel, ResponsePanel } from 'parlor';
+import { MessagePanel, ResponsePanel } from '@berrydev-ai/parlor';
 
 render(
   <>
@@ -51,7 +51,7 @@ render(
 
 ```tsx
 import { render } from 'ink';
-import { SimpleResponse } from 'parlor';
+import { SimpleResponse } from '@berrydev-ai/parlor';
 
 // Your LLM stream (OpenAI, Anthropic, etc.)
 const stream = openai.chat.completions.create({
@@ -72,7 +72,7 @@ render(
 
 ```tsx
 import { render } from 'ink';
-import { AgentResponse } from 'parlor';
+import { AgentResponse } from '@berrydev-ai/parlor';
 
 render(
   <AgentResponse
@@ -93,7 +93,7 @@ Content passed to panels automatically renders markdown with syntax highlighting
 
 ```tsx
 import { render } from 'ink';
-import { ResponsePanel } from 'parlor';
+import { ResponsePanel } from '@berrydev-ai/parlor';
 
 const content = `Here's a Python example:
 
@@ -166,7 +166,7 @@ const elapsed = useTimer(isActive);
 ### Custom Themes
 
 ```tsx
-import { Panel } from 'parlor';
+import { Panel } from '@berrydev-ai/parlor';
 
 <Panel
   title="Custom Panel"
@@ -183,7 +183,7 @@ import { Panel } from 'parlor';
 Available styles: `heavy` (default), `single`, `double`, `rounded`, `bold`
 
 ```tsx
-import { Panel, HEAVY, SINGLE, DOUBLE, ROUNDED, BOLD } from 'parlor';
+import { Panel, HEAVY, SINGLE, DOUBLE, ROUNDED, BOLD } from '@berrydev-ai/parlor';
 ```
 
 ## Examples
