@@ -1,0 +1,97 @@
+{
+  "name": "parlor",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Rich-like console rendering library for TypeScript with streaming support for AI agent responses",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "test": "bun test",
+    "lint": "eslint src/ tests/",
+    "lint:fix": "eslint src/ tests/ --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"tests/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"tests/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "bun run build",
+    "example:basic": "bun run examples/basic.tsx",
+    "example:streaming": "bun run examples/streaming.tsx",
+    "example:agent": "bun run examples/agent-response.tsx",
+    "example:advanced": "bun run examples/advanced.tsx",
+    "example:openai": "bun run examples/openai-integration.tsx"
+  },
+  "keywords": [
+    "terminal",
+    "console",
+    "tui",
+    "cli",
+    "rich",
+    "logging",
+    "ai",
+    "agent",
+    "streaming",
+    "ink",
+    "react",
+    "llm",
+    "openai",
+    "anthropic",
+    "markdown",
+    "syntax-highlighting"
+  ],
+  "author": "Berry Dev AI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/berrydev-ai/parlor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/berrydev-ai/parlor/issues"
+  },
+  "homepage": "https://github.com/berrydev-ai/parlor#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "cli-boxes": "^3.0.0",
+    "cli-highlight": "^2.1.11",
+    "cli-spinners": "^3.3.0",
+    "ink": "^4.4.1",
+    "marked": "^11.0.0",
+    "marked-terminal": "^7.2.0",
+    "react": "^18.2.0",
+    "string-width": "^7.0.0",
+    "strip-ansi": "^7.1.0",
+    "wrap-ansi": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.50.0",
+    "@typescript-eslint/parser": "^8.50.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.7.4",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}
