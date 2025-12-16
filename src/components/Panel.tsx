@@ -14,6 +14,7 @@ export interface PanelProps {
   padding?: number | [number, number]; // [vertical, horizontal]
   expand?: boolean;
   width?: number;
+  maxWidth?: number; // Maximum width constraint (e.g., 150 for 150 characters)
 }
 
 /**
@@ -29,9 +30,17 @@ export function Panel({
   padding = 1,
   expand = true,
   width,
+  maxWidth,
 }: PanelProps) {
   const box = getBoxStyle(borderStyle);
-  const terminalWidth = width || (expand ? getTerminalWidth() : undefined);
+  let terminalWidth = width || (expand ? getTerminalWidth() : undefined);
+
+  // Apply maxWidth constraint if specified
+  if (maxWidth && terminalWidth && terminalWidth > maxWidth) {
+    terminalWidth = maxWidth;
+  } else if (maxWidth && !terminalWidth) {
+    terminalWidth = maxWidth;
+  }
 
   // Calculate padding values
   const [verticalPadding, horizontalPadding] =
