@@ -163,7 +163,7 @@ bun run dev
 bun run build
 ```
 
-Output: `dist/index.js` (CJS), `dist/index.mjs` (ESM), `dist/index.d.ts` (types)
+Output: `dist/index.cjs` (CJS), `dist/index.js` (ESM), `dist/index.d.cts` (CJS types), `dist/index.d.ts` (ESM types)
 
 ### Running Examples
 
