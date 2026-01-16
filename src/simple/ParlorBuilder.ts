@@ -1,4 +1,4 @@
-import { buildPanel, buildThemedPanel, type PanelOptions, type PanelType } from './renderer.js';
+import { buildPanel, buildThemedPanel, type PanelOptions } from './renderer.js';
 import { buildHeader, type HeaderOptions } from './templates/header.js';
 import { buildDescriptionList, type DescriptionListOptions } from './templates/dl.js';
 import { buildList, type ListOptions } from './templates/list.js';

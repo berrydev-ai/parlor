@@ -31,8 +31,7 @@ export function buildDescriptionList(
   if (entries.length === 0) return '';
 
   // Calculate max key width
-  const maxKeyWidth =
-    options.keyWidth ?? Math.max(...entries.map(([key]) => getStringWidth(key)));
+  const maxKeyWidth = options.keyWidth ?? Math.max(...entries.map(([key]) => getStringWidth(key)));
 
   const lines: string[] = [];
 

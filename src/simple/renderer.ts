@@ -1,9 +1,5 @@
 import { createColorizer } from './utils/color.js';
-import {
-  getTerminalWidth,
-  getStringWidth,
-  wrapText,
-} from '../utils/wrap.js';
+import { getTerminalWidth, getStringWidth, wrapText } from '../utils/wrap.js';
 import { renderMarkdown, containsMarkdown } from '../utils/markdown.js';
 import { getBoxStyle, type BoxStyle } from '../boxes/styles.js';
 import { defaultTheme, type Theme } from '../themes/default.js';
@@ -54,7 +50,8 @@ export function buildPanel(content: string, options: PanelOptions = {}): string 
   // Build the panel
   const lines: string[] = [];
   const paddingStr = ' '.repeat(horizontalPadding);
-  const emptyLine = colorize(box.vertical) + ' '.repeat(width - borderWidth) + colorize(box.vertical);
+  const emptyLine =
+    colorize(box.vertical) + ' '.repeat(width - borderWidth) + colorize(box.vertical);
 
   // Top border
   lines.push(buildTopBorder(box, width, options.title, options.titleAlign, colorize));
