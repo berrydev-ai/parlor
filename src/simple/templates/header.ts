@@ -2,8 +2,12 @@ import { createColorizer } from '../utils/color.js';
 import { getTerminalWidth, getStringWidth } from '../../utils/wrap.js';
 import { DOUBLE, type BoxStyle } from '../../boxes/styles.js';
 
+// Default max width to prevent excessively wide output
+const DEFAULT_MAX_WIDTH = 120;
+
 export interface HeaderOptions {
   width?: number;
+  maxWidth?: number;
   color?: string;
   style?: BoxStyle;
   align?: 'left' | 'center' | 'right';
@@ -14,7 +18,8 @@ export interface HeaderOptions {
  * Example: ═══════════ TITLE ═══════════
  */
 export function buildHeader(title: string, options: HeaderOptions = {}): string {
-  const width = options.width ?? getTerminalWidth();
+  const maxWidth = options.maxWidth ?? DEFAULT_MAX_WIDTH;
+  const width = Math.min(options.width ?? getTerminalWidth(), maxWidth);
   const style = options.style ?? DOUBLE;
   const align = options.align ?? 'center';
   const color = options.color ?? 'white';

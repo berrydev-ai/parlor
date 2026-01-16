@@ -31,6 +31,40 @@ export { buildFiglet, getFigletFonts, type FigletOptions } from './templates/fig
 export { defaultTheme, darkTheme, lightTheme, agnoTheme, getTheme } from '../themes/default.js';
 export type { Theme } from '../themes/types.js';
 
+// Streaming components
+export {
+  // ThinkingIndicator
+  ThinkingIndicator,
+  type ThinkingIndicatorOptions,
+  // StreamingPanel
+  StreamingPanel,
+  type StreamingPanelOptions,
+  // ReasoningPanel
+  ReasoningPanel,
+  type ReasoningPanelOptions,
+  // Stream extractors
+  StreamExtractors,
+  type StreamExtractor,
+  type StreamChunk,
+  // Stream response helpers
+  streamResponse,
+  streamMastraResponse,
+  type StreamResponseOptions,
+  type StreamResult,
+  // Terminal utilities (for advanced users)
+  cursor,
+  line,
+  rgb,
+  bgRgb,
+  resetFg,
+  resetBg,
+  reset,
+  lerpColor,
+  getColorRgb,
+  colors,
+  type RGB,
+} from './streaming/index.js';
+
 /**
  * Create a new ParlorBuilder instance for fluent API usage
  *
