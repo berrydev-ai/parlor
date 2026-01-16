@@ -31,6 +31,9 @@ export interface StreamingPanelOptions {
  * panel.finish()
  * ```
  */
+// Default max width to prevent excessively wide panels
+const DEFAULT_MAX_WIDTH = 120;
+
 export class StreamingPanel {
   private content = '';
   private lineCount = 0;
@@ -38,7 +41,10 @@ export class StreamingPanel {
   private options: StreamingPanelOptions;
 
   constructor(options: StreamingPanelOptions = {}) {
-    this.options = options;
+    this.options = {
+      ...options,
+      maxWidth: options.maxWidth ?? DEFAULT_MAX_WIDTH,
+    };
   }
 
   /**

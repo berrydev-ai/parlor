@@ -74,7 +74,7 @@ export const line = {
 
   /**
    * Erase n lines (moves up and clears each line)
-   * Cursor ends at the start of where the first erased line was
+   * Cursor ends at column 0 of where the first erased line was
    */
   eraseLines: (n: number): void => {
     if (n <= 0) return;
@@ -84,6 +84,8 @@ export const line = {
       // Move up, clear line
       output += `${ESC}1A${ESC}2K`;
     }
+    // Ensure cursor is at column 0
+    output += '\r';
     process.stdout.write(output);
   },
 };
