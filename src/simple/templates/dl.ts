@@ -1,8 +1,12 @@
 import { createColorizer } from '../utils/color.js';
 import { getTerminalWidth, getStringWidth, padString } from '../../utils/wrap.js';
 
+// Default max width to prevent excessively wide output
+const DEFAULT_MAX_WIDTH = 120;
+
 export interface DescriptionListOptions {
   width?: number;
+  maxWidth?: number;
   keyColor?: string;
   valueColor?: string;
   separator?: string;
@@ -19,7 +23,8 @@ export function buildDescriptionList(
   data: Record<string, string | number | boolean>,
   options: DescriptionListOptions = {}
 ): string {
-  const width = options.width ?? getTerminalWidth();
+  const maxWidth = options.maxWidth ?? DEFAULT_MAX_WIDTH;
+  const width = Math.min(options.width ?? getTerminalWidth(), maxWidth);
   const keyColor = options.keyColor ?? 'cyan';
   const valueColor = options.valueColor ?? 'white';
   const separator = options.separator ?? '  ';

@@ -4,6 +4,9 @@ import { renderMarkdown, containsMarkdown } from '../utils/markdown.js';
 import { getBoxStyle, type BoxStyle } from '../boxes/styles.js';
 import { defaultTheme, type Theme } from '../themes/default.js';
 
+// Default max width to prevent excessively wide output
+const DEFAULT_MAX_WIDTH = 120;
+
 export interface PanelOptions {
   title?: string;
   titleAlign?: 'left' | 'center' | 'right';
@@ -20,7 +23,7 @@ export interface PanelOptions {
  */
 export function buildPanel(content: string, options: PanelOptions = {}): string {
   const termWidth = getTerminalWidth();
-  const maxWidth = options.maxWidth ?? termWidth;
+  const maxWidth = options.maxWidth ?? DEFAULT_MAX_WIDTH;
   const width = Math.min(options.width ?? termWidth, maxWidth);
   const padding = options.padding ?? 1;
   const box = getBoxStyle(options.borderStyle ?? 'heavy');

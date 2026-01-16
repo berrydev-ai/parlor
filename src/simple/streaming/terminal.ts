@@ -73,19 +73,18 @@ export const line = {
   },
 
   /**
-   * Erase n lines (moves up and clears each line)
-   * Cursor ends at column 0 of where the first erased line was
+   * Erase n lines starting from current line, moving upward
+   * Cursor ends at the start of where the topmost erased line was
    */
   eraseLines: (n: number): void => {
     if (n <= 0) return;
 
-    let output = '';
-    for (let i = 0; i < n; i++) {
-      // Move up, clear line
-      output += `${ESC}1A${ESC}2K`;
+    // Clear current line first, then move up and clear remaining lines
+    let output = `${ESC}2K`; // Clear current line
+    for (let i = 1; i < n; i++) {
+      output += `${ESC}1A${ESC}2K`; // Move up, then clear
     }
-    // Ensure cursor is at column 0
-    output += '\r';
+    output += '\r'; // Return to column 0
     process.stdout.write(output);
   },
 };

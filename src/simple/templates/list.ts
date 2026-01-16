@@ -1,8 +1,12 @@
 import { createColorizer } from '../utils/color.js';
 import { wrapText, getTerminalWidth } from '../../utils/wrap.js';
 
+// Default max width to prevent excessively wide output
+const DEFAULT_MAX_WIDTH = 120;
+
 export interface ListOptions {
   width?: number;
+  maxWidth?: number;
   color?: string;
   bullet?: string;
   numbered?: boolean;
@@ -19,7 +23,8 @@ export interface ListOptions {
  *   2. Item two
  */
 export function buildList(items: string[], options: ListOptions = {}): string {
-  const width = options.width ?? getTerminalWidth();
+  const maxWidth = options.maxWidth ?? DEFAULT_MAX_WIDTH;
+  const width = Math.min(options.width ?? getTerminalWidth(), maxWidth);
   const color = options.color ?? 'white';
   const bullet = options.bullet ?? '•';
   const numbered = options.numbered ?? false;
