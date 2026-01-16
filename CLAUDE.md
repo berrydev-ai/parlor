@@ -24,6 +24,8 @@ bun run example:streaming  # Streaming demo
 bun run example:agent      # Agent workflow
 ```
 
+Output: `dist/index.cjs` (CJS), `dist/index.js` (ESM), `dist/index.d.cts` (CJS types), `dist/index.d.ts` (ESM types)
+
 ## Architecture
 
 ### Two APIs
