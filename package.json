@@ -1,6 +1,6 @@
 {
   "name": "@berrydev-ai/parlor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "Rich-like console rendering library for TypeScript with streaming support for AI agent responses",
   "main": "dist/index.cjs",
