@@ -8,9 +8,11 @@ A TypeScript library for rich, interactive console output - like Python's Rich l
 
 ## Features
 
+- **Simple API** - Fluent `console.log`-style interface for quick output (no React required)
 - **Beautiful Panels** - Bordered boxes with titles, matching Agno's aesthetic
 - **Streaming Support** - Real-time updates from async iterators (perfect for LLM responses)
 - **Markdown Rendering** - Code blocks with syntax highlighting and dark backgrounds
+- **ASCII Art** - Figlet integration for eye-catching headers
 - **Fast & Lightweight** - Built on Ink (React for terminals)
 - **TypeScript First** - Full type safety
 - **Flexible** - Works with Bun, Node.js, and Deno
@@ -28,7 +30,24 @@ pnpm add @berrydev-ai/parlor
 
 ## Quick Start
 
-### Basic Panel
+### Simple API (Recommended for Basic Use)
+
+For simple console output without React/Ink boilerplate, use the fluent Simple API:
+
+```ts
+import { parlor } from '@berrydev-ai/parlor/simple';
+
+parlor()
+  .header('My Application')
+  .message('Processing your request...')
+  .response('Here is the result!')
+  .dl({ Status: 'Success', Duration: '2.3s' })
+  .render();
+```
+
+See the [Simple API](#simple-api) section below for full documentation.
+
+### Basic Panel (React/Ink)
 
 ```tsx
 import { render } from 'ink';
@@ -117,7 +136,236 @@ Code blocks are rendered with:
 - Full-width backgrounds
 - Language labels
 
-## Components
+## Simple API
+
+The Simple API provides a `console.log`-style interface with a fluent builder pattern. It's perfect for CLI tools, scripts, and applications that don't need React/Ink's full rendering capabilities.
+
+### Installation
+
+The Simple API is included in the main package:
+
+```ts
+import { parlor } from '@berrydev-ai/parlor/simple';
+```
+
+### Basic Usage
+
+```ts
+// Create output and render to stdout
+parlor()
+  .header('Status Report')
+  .message('User query received')
+  .response('Processing complete!')
+  .render();
+
+// Or capture as a string
+const output = parlor()
+  .success('Task completed!')
+  .toString();
+
+console.log(output);
+```
+
+### Figlet ASCII Art
+
+Create eye-catching ASCII art headers:
+
+```ts
+parlor()
+  .figlet('PARLOR', { color: 'cyan', font: 'Standard' })
+  .newline()
+  .render();
+```
+
+Output:
+```
+  ____   _    ____  _     ___  ____
+ |  _ \ / \  |  _ \| |   / _ \|  _ \
+ | |_) / _ \ | |_) | |  | | | | |_) |
+ |  __/ ___ \|  _ <| |__| |_| |  _ <
+ |_| /_/   \_\_| \_\_____\___/|_| \_\
+```
+
+### Headers
+
+Section dividers with customizable styles:
+
+```ts
+parlor()
+  .header('Section Title', { color: 'green', align: 'center' })
+  .render();
+```
+
+Output: `══════════════════ Section Title ══════════════════`
+
+### Themed Panels
+
+Pre-styled panels for different message types:
+
+```ts
+parlor()
+  .message('User input')      // Cyan border
+  .response('AI response')    // Blue border
+  .error('Error occurred')    // Red border
+  .warn('Warning message')    // Yellow border
+  .success('Task complete')   // Green border
+  .info('Information')        // Blue border
+  .render();
+```
+
+### Custom Panels
+
+Full control over panel styling:
+
+```ts
+parlor()
+  .panel('Custom content', {
+    title: 'My Panel',
+    borderColor: 'magenta',
+    borderStyle: 'double',
+    padding: 2,
+  })
+  .render();
+```
+
+### Description Lists
+
+Key-value pair formatting:
+
+```ts
+parlor()
+  .dl({
+    Name: 'Parlor',
+    Version: '0.2.0',
+    Author: 'Berry Dev AI',
+    License: 'MIT',
+  })
+  .render();
+```
+
+Output:
+```
+Name     Parlor
+Version  0.2.0
+Author   Berry Dev AI
+License  MIT
+```
+
+### Lists
+
+Bullet and numbered lists:
+
+```ts
+// Bullet list
+parlor()
+  .list(['First item', 'Second item', 'Third item'])
+  .render();
+
+// Numbered list
+parlor()
+  .numberedList(['Step one', 'Step two', 'Step three'])
+  .render();
+```
+
+### Code Blocks
+
+Syntax-highlighted code with dark background:
+
+```ts
+parlor()
+  .code(`function hello(name: string) {
+  return \`Hello, \${name}!\`;
+}`, 'typescript')
+  .render();
+```
+
+### Chaining and Composition
+
+All methods return the builder for chaining:
+
+```ts
+parlor()
+  .figlet('MY APP', { color: 'cyan' })
+  .newline()
+  .header('Configuration')
+  .dl({ Environment: 'production', Debug: false })
+  .newline()
+  .header('Status')
+  .success('All systems operational')
+  .newline()
+  .header('Recent Activity')
+  .list(['User logged in', 'Data synced', 'Report generated'])
+  .render();
+```
+
+### Simple API Reference
+
+#### Builder Methods
+
+| Method | Description |
+|--------|-------------|
+| `.figlet(text, options?)` | ASCII art text |
+| `.header(title, options?)` | Section divider |
+| `.message(content, options?)` | Cyan panel (user input) |
+| `.response(content, options?)` | Blue panel (AI response) |
+| `.error(content, options?)` | Red panel (errors) |
+| `.warn(content, options?)` | Yellow panel (warnings) |
+| `.success(content, options?)` | Green panel (success) |
+| `.info(content, options?)` | Blue panel (info) |
+| `.panel(content, options?)` | Custom styled panel |
+| `.dl(data, options?)` | Description list |
+| `.list(items, options?)` | Bullet list |
+| `.numberedList(items, options?)` | Numbered list |
+| `.code(content, language?, options?)` | Code block |
+| `.text(content)` | Raw text |
+| `.newline()` | Empty line |
+| `.clear()` | Clear all segments |
+
+#### Output Methods
+
+| Method | Description |
+|--------|-------------|
+| `.render()` | Write to stdout |
+| `.toString()` | Return as string |
+
+#### Figlet Options
+
+```ts
+interface FigletOptions {
+  font?: string;        // Figlet font name (default: 'Standard')
+  color?: string;       // Text color
+  horizontalLayout?: 'default' | 'full' | 'fitted' | 'controlled smushing';
+  verticalLayout?: 'default' | 'full' | 'fitted' | 'controlled smushing';
+}
+```
+
+#### Header Options
+
+```ts
+interface HeaderOptions {
+  width?: number;       // Width (default: terminal width)
+  color?: string;       // Color (default: 'white')
+  style?: BoxStyle;     // Border style
+  align?: 'left' | 'center' | 'right';  // Title alignment
+}
+```
+
+#### Panel Options
+
+```ts
+interface PanelOptions {
+  title?: string;
+  titleAlign?: 'left' | 'center' | 'right';
+  borderStyle?: 'heavy' | 'single' | 'double' | 'rounded' | 'bold';
+  borderColor?: string;
+  width?: number;
+  maxWidth?: number;
+  padding?: number;
+  markdown?: boolean;   // Auto-render markdown (default: auto-detect)
+}
+```
+
+## Components (React/Ink)
 
 ### Core Components
 
@@ -190,16 +438,18 @@ import { Panel, HEAVY, SINGLE, DOUBLE, ROUNDED, BOLD } from '@berrydev-ai/parlor
 
 See the `examples/` directory for complete working examples:
 
-- `examples/basic.tsx` - All panel types
+- `examples/simple.ts` - Simple API with all features (no React required)
+- `examples/basic.tsx` - All panel types (React/Ink)
 - `examples/streaming.tsx` - Streaming response with markdown
 - `examples/agent-response.tsx` - Complete agent workflow
 
 Run examples:
 
 ```bash
-bun run example:basic
-bun run example:streaming
-bun run example:agent
+bun run example:simple    # Simple API demo
+bun run example:basic     # React/Ink panels
+bun run example:streaming # Streaming demo
+bun run example:agent     # Agent workflow
 ```
 
 ## API Reference
