@@ -38,7 +38,8 @@
     "example:agent": "bun run examples/agent-response.tsx",
     "example:advanced": "bun run examples/advanced.tsx",
     "example:openai": "bun run examples/openai-integration.tsx",
-    "example:simple": "bun run examples/simple.ts"
+    "example:simple": "bun run examples/simple.ts",
+    "example:streaming-simple": "bun run examples/streaming-simple.ts"
   },
   "keywords": [
     "terminal",
