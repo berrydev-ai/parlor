@@ -365,6 +365,195 @@ interface PanelOptions {
 }
 ```
 
+## Streaming API (Simple)
+
+The Simple API includes streaming components for real-time LLM responses without React/Ink dependencies. These components handle terminal cursor management and progressive rendering automatically.
+
+```ts
+import {
+  ThinkingIndicator,
+  StreamingPanel,
+  ReasoningPanel,
+  streamResponse,
+  streamMastraResponse,
+  StreamExtractors,
+} from '@berrydev-ai/parlor/simple';
+```
+
+### ThinkingIndicator
+
+Animated indicator with shimmer effect while waiting for responses.
+
+```ts
+const thinking = new ThinkingIndicator('Thinking...', {
+  shimmer: true,    // Enable gradient sweep animation (default: true)
+  color: 'cyan',    // Base color (default: 'cyan')
+  interval: 50,     // Animation interval in ms (default: 50)
+  prefix: '> ',     // Optional prefix text
+});
+
+thinking.start();
+// ... async work ...
+thinking.stop();
+
+// Update text while running
+thinking.setText('Still thinking...');
+```
+
+### StreamingPanel
+
+Progressive panel that updates as content streams in.
+
+```ts
+const panel = new StreamingPanel({
+  title: 'Response',
+  borderStyle: 'rounded',
+  borderColor: 'blue',
+  maxWidth: 120,
+  padding: 1,
+});
+
+panel.start();
+
+for await (const chunk of stream) {
+  panel.append(chunk.text);
+}
+
+panel.finish();
+
+// Other methods
+panel.setContent('Replace all content');
+panel.getContent();  // Get current content
+panel.clear();       // Clear and close without final render
+```
+
+### ReasoningPanel
+
+Streaming panel pre-styled for reasoning/thinking content (green border, single style).
+
+```ts
+const reasoning = new ReasoningPanel({ title: 'Thinking' });
+reasoning.start();
+reasoning.append('Analyzing the problem...');
+reasoning.finish();
+```
+
+### streamResponse
+
+High-level helper that coordinates thinking indicator, reasoning panel, and response panel.
+
+```ts
+const result = await streamResponse(llmStream, {
+  // Panel options
+  title: 'Assistant',
+  borderStyle: 'rounded',
+  borderColor: 'blue',
+  width: 80,
+  maxWidth: 120,
+  padding: 1,
+
+  // Thinking indicator
+  thinking: 'Thinking...',
+  thinkingOptions: { shimmer: true, color: 'cyan' },
+
+  // Reasoning panel
+  showReasoning: true,
+
+  // Stream extractor (default: auto)
+  extractor: StreamExtractors.openai,
+
+  // Callbacks
+  onChunk: (chunk) => console.log('Received:', chunk),
+  onComplete: (result) => console.log('Done:', result.text),
+  onError: (error) => console.error('Error:', error),
+});
+
+console.log(result.text);       // Full text content
+console.log(result.reasoning);  // Full reasoning content (if any)
+```
+
+### streamMastraResponse
+
+Convenience wrapper for Mastra framework streams.
+
+```ts
+// With Mastra agent stream object
+const result = await streamMastraResponse(
+  agent.stream(context, { maxSteps: 999 }),
+  {
+    title: 'Agent',
+    thinking: 'Processing...',
+    showReasoning: true,
+  }
+);
+
+// Or with direct fullStream
+const result = await streamMastraResponse(
+  agent.stream(context).fullStream,
+  { title: 'Agent' }
+);
+```
+
+### StreamExtractors
+
+Pre-built extractors for common LLM streaming formats.
+
+| Extractor | Format | Chunk Structure |
+|-----------|--------|-----------------|
+| `StreamExtractors.mastra` | Mastra | `{ type: 'text-delta', payload: { text } }` |
+| `StreamExtractors.openai` | OpenAI Chat | `{ choices: [{ delta: { content } }] }` |
+| `StreamExtractors.openaiResponses` | OpenAI Responses | `{ type: 'response.output_text.delta', delta }` |
+| `StreamExtractors.anthropic` | Anthropic | `{ type: 'content_block_delta', delta: { text } }` |
+| `StreamExtractors.aiSdk` | Vercel AI SDK | `{ type: 'text-delta', delta }` |
+| `StreamExtractors.auto` | Auto-detect | Tries common patterns |
+| `StreamExtractors.simple` | Simple | `{ text }` or `{ content }` |
+
+Custom extractors:
+
+```ts
+const myExtractor = (chunk: unknown) => ({
+  text: chunk.message || '',
+  reasoning: chunk.thought || '',
+});
+
+await streamResponse(stream, {
+  extractor: myExtractor,
+});
+```
+
+### Complete Example
+
+```ts
+import {
+  parlor,
+  streamResponse,
+  StreamExtractors,
+} from '@berrydev-ai/parlor/simple';
+
+// Header
+parlor()
+  .figlet('MY AGENT', { color: 'cyan' })
+  .header('Starting conversation')
+  .render();
+
+// Stream the response
+const result = await streamResponse(openaiStream, {
+  title: 'Assistant',
+  thinking: 'Thinking...',
+  showReasoning: true,
+  extractor: StreamExtractors.openai,
+  onComplete: (r) => console.log(`Generated ${r.text.length} chars`),
+});
+
+// Show final status
+parlor()
+  .success('Response complete!')
+  .dl({ Characters: result.text.length, HasReasoning: !!result.reasoning })
+  .render();
+```
+
+Run the streaming demo: `bun run example:streaming-simple`
+
 ## Components (React/Ink)
 
 ### Core Components
@@ -439,6 +628,7 @@ import { Panel, HEAVY, SINGLE, DOUBLE, ROUNDED, BOLD } from '@berrydev-ai/parlor
 See the `examples/` directory for complete working examples:
 
 - `examples/simple.ts` - Simple API with all features (no React required)
+- `examples/streaming-simple.ts` - Streaming API demo (no React required)
 - `examples/basic.tsx` - All panel types (React/Ink)
 - `examples/streaming.tsx` - Streaming response with markdown
 - `examples/agent-response.tsx` - Complete agent workflow
@@ -446,10 +636,11 @@ See the `examples/` directory for complete working examples:
 Run examples:
 
 ```bash
-bun run example:simple    # Simple API demo
-bun run example:basic     # React/Ink panels
-bun run example:streaming # Streaming demo
-bun run example:agent     # Agent workflow
+bun run example:simple           # Simple API demo
+bun run example:streaming-simple # Streaming API demo
+bun run example:basic            # React/Ink panels
+bun run example:streaming        # Streaming demo
+bun run example:agent            # Agent workflow
 ```
 
 ## API Reference
